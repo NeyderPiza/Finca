@@ -3,6 +3,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config(); // Cargar variables de entorno
 
+const animalRoutes = require('./routes/animales.routes');
+
 // Importar el cliente de Prisma
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -21,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 // --- AQUÍ IRÁN LAS RUTAS DE NUESTRA API ---
+app.use('/api/animales', animalRoutes);
 
 // Ejemplo: Obtener todas las especies
 app.get('/api/especies', async (req, res) => {
