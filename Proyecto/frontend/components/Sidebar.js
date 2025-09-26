@@ -16,6 +16,16 @@ export default function Sidebar() {
               Gestión de Animales
             </Link>
           </li>
+          <li className="mb-4">
+            <Link href="/animales" className="hover:text-yellow-400">
+              Gestión de Animales
+            </Link>
+          </li>
+          <li className="mb-4"> {/* <-- LÍNEA NUEVA */}
+            <Link href="/finanzas" className="hover:text-yellow-400">
+              Control Financiero
+            </Link>
+          </li>
           {/* Aquí añadiremos más enlaces en el futuro (Finanzas, Vacunación, etc.) */}
         </ul>
       </nav>
