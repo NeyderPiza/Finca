@@ -45,5 +45,60 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Error al crear el registro de producción.' });
     }
 });
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const registro = await prisma.produccionLechera.findUnique({
+            where: { id: parseInt(id) },
+        });
+        if (!registro) {
+            return res.status(404).json({ error: 'Registro no encontrado.' });
+        }
+        res.json(registro);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener el registro.' });
+    }
+});
+
+// POST /api/produccion - Crear un nuevo registro
+router.post('/', async (req, res) => {
+    // ... (este código ya lo tienes)
+});
+
+// --- VERIFICA QUE TENGAS ESTAS RUTAS ---
+
+// PUT /api/produccion/:id - ACTUALIZAR UN REGISTRO
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+    try {
+        const registroActualizado = await prisma.produccionLechera.update({
+            where: { id: parseInt(id) },
+            data: {
+                fecha: new Date(data.fecha),
+                litros_producidos: parseFloat(data.litros_producidos),
+                precio_litro: parseFloat(data.precio_litro),
+            },
+        });
+        res.json(registroActualizado);
+    } catch (error) {
+        if (error.code === 'P2025') return res.status(404).json({ error: 'Registro no encontrado.' });
+        res.status(500).json({ error: 'Error al actualizar el registro.' });
+    }
+});
+
+// DELETE /api/produccion/:id - ELIMINAR UN REGISTRO
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await prisma.produccionLechera.delete({
+            where: { id: parseInt(id) },
+        });
+        res.status(204).send();
+    } catch (error) {
+        if (error.code === 'P2025') return res.status(404).json({ error: 'Registro no encontrado.' });
+        res.status(500).json({ error: 'Error al eliminar el registro.' });
+    }
+});
 
 module.exports = router;

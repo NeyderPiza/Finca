@@ -26,5 +26,16 @@ router.post('/', async (req, res) => {
         res.status(500).json({ error: 'Error al crear la vacuna.' });
     }
 });
-
+// DELETE /api/animales/vacunas/:registroId - ELIMINAR UN REGISTRO DE VACUNACIÓN
+router.delete('/vacunas/:registroId', async (req, res) => {
+    const { registroId } = req.params;
+    try {
+        await prisma.calendarioVacunacion.delete({
+            where: { id: parseInt(registroId) }
+        });
+        res.status(204).send();
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar el registro de vacunación.' });
+    }
+});
 module.exports = router;

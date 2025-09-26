@@ -46,5 +46,44 @@ router.post('/', async (req, res) => {
 
 // (Opcional) Puedes añadir aquí las rutas para GET (por id), PUT y DELETE si las necesitas.
 // Por ahora, con GET y POST es suficiente para empezar.
+// PUT /api/finanzas/:id - ACTUALIZAR UNA TRANSACCIÓN
+router.put('/:id', async (req, res) => {
+    const { id } = req.params;
+    const { tipo_transaccion, descripcion, monto, fecha, categoria } = req.body;
 
+    try {
+        const transaccionActualizada = await prisma.transaccionFinanciera.update({
+            where: { id: parseInt(id) },
+            data: {
+                tipo_transaccion,
+                descripcion,
+                monto: parseFloat(monto),
+                fecha: new Date(fecha),
+                categoria,
+            },
+        });
+        res.json(transaccionActualizada);
+    } catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: 'Transacción no encontrada.' });
+        }
+        res.status(500).json({ error: 'Error al actualizar la transacción.' });
+    }
+});
+
+// DELETE /api/finanzas/:id - ELIMINAR UNA TRANSACCIÓN
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await prisma.transaccionFinanciera.delete({
+            where: { id: parseInt(id) },
+        });
+        res.status(204).send(); // Éxito, sin contenido
+    } catch (error) {
+        if (error.code === 'P2025') {
+            return res.status(404).json({ error: 'Transacción no encontrada.' });
+        }
+        res.status(500).json({ error: 'Error al eliminar la transacción.' });
+    }
+});
 module.exports = router;
