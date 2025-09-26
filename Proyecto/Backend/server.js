@@ -4,6 +4,10 @@ const cors = require('cors');
 require('dotenv').config(); // Cargar variables de entorno
 
 const animalRoutes = require('./routes/animales.routes');
+const finanzasRoutes = require('./routes/finanzas.routes.js');
+const dashboardRoutes = require('./routes/dashboard.routes.js');
+const produccionRoutes = require('./routes/produccion.routes.js');
+const vacunasRoutes = require('./routes/vacunas.routes.js');
 
 // Importar el cliente de Prisma
 const { PrismaClient } = require('@prisma/client');
@@ -24,6 +28,11 @@ app.get('/', (req, res) => {
 
 // --- AQUÍ IRÁN LAS RUTAS DE NUESTRA API ---
 app.use('/api/animales', animalRoutes);
+app.use('/api/finanzas', finanzasRoutes);
+app.use('/api/dashboard', dashboardRoutes); 
+app.use('/api/produccion', produccionRoutes);
+app.use('/api/vacunas', vacunasRoutes);
+
 
 // Ejemplo: Obtener todas las especies
 app.get('/api/especies', async (req, res) => {

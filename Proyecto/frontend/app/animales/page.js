@@ -61,25 +61,34 @@ export default function AnimalesPage() {
       {/* Si hay animales, los mostramos en una tabla */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200">
-          <thead className="bg-gray-100">
-                    <tr>
-                        <th className="py-2 px-4 border-b text-left">Etiqueta</th>
-                        <th className="py-2 px-4 border-b text-left">Nombre</th>
-                        <th className="py-2 px-4 border-b text-left">Especie</th>
-                        <th className="py-2 px-4 border-b text-left">Estado</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {animales.map((animal) => (
-                        <tr key={animal.id} className="hover:bg-gray-50">
-                        <td className="py-2 px-4 border-b">{animal.numero_etiqueta}</td>
-                        <td className="py-2 px-4 border-b">{animal.nombre || 'N/A'}</td>
-                        <td className="py-2 px-4 border-b">{animal.especie.nombre}</td>
-                        <td className="py-2 px-4 border-b">{animal.estado}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+            <thead className="bg-gray-100">
+                <tr>
+                <th className="py-2 px-4 border-b text-left">Etiqueta</th>
+                <th className="py-2 px-4 border-b text-left">Nombre</th>
+                <th className="py-2 px-4 border-b text-left">Especie</th>
+                <th className="py-2 px-4 border-b text-left">Estado</th>
+                <th className="py-2 px-4 border-b text-left">Acciones</th> 
+                </tr>
+            </thead>
+            <tbody>
+                {animales.map((animal) => (
+                <tr key={animal.id} className="hover:bg-gray-50">
+                    <td className="py-2 px-4 border-b">{animal.numero_etiqueta}</td>
+                    <td className="py-2 px-4 border-b">{animal.nombre || 'N/A'}</td>
+                    <td className="py-2 px-4 border-b">{animal.especie.nombre}</td>
+                    <td className="py-2 px-4 border-b">{animal.estado}</td>
+                    <td className="py-2 px-4 border-b"> 
+            <Link 
+                href={`/animales/${animal.id}`}
+                className="text-blue-500 hover:text-blue-700 font-semibold"
+            >
+            Ver Detalles
+          </Link>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
         </div>
       )
     </main>
