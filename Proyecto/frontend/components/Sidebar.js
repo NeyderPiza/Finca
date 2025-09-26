@@ -26,7 +26,11 @@ export default function Sidebar() {
               Control Financiero
             </Link>
           </li>
-          {/* Aquí añadiremos más enlaces en el futuro (Finanzas, Vacunación, etc.) */}
+          <li className="mb-4"> 
+            <Link href="/produccion" className="hover:text-yellow-400">
+              Producción Lechera
+            </Link>
+          </li>
         </ul>
       </nav>
     </aside>

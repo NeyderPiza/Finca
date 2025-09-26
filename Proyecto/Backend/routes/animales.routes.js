@@ -40,9 +40,14 @@ router.get('/:id', async (req, res) => {
             include: {
                 especie: true,
                 historial_medico: true, // También podemos traer su historial
-                vacunaciones: true,   // y sus vacunaciones
-            },
-        });
+                vacunaciones: { 
+            orderBy: { fecha_aplicacion: 'desc' },
+            include: {
+                vacuna: true // Para que nos traiga el nombre de la vacuna
+            }
+        },
+    },
+});
 
         if (!animal) {
             return res.status(404).json({ error: 'Animal no encontrado.' });
@@ -124,6 +129,29 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
+// POST /api/animales/:id/vacunas - REGISTRAR UNA VACUNA A UN ANIMAL
+router.post('/:id/vacunas', async (req, res) => {
+    const { id } = req.params;
+    const { vacuna_id, fecha_aplicacion, proxima_dosis } = req.body;
 
+    if (!vacuna_id || !fecha_aplicacion) {
+        return res.status(400).json({ error: 'La vacuna y la fecha son obligatorias.' });
+    }
+
+    try {
+        const nuevoRegistroVacuna = await prisma.calendarioVacunacion.create({
+            data: {
+                animal_id: parseInt(id),
+                vacuna_id: parseInt(vacuna_id),
+                fecha_aplicacion: new Date(fecha_aplicacion),
+                proxima_dosis: proxima_dosis ? new Date(proxima_dosis) : null,
+            }
+        });
+        res.status(201).json(nuevoRegistroVacuna);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error al registrar la vacuna.' });
+    }
+});
 // Exportamos el router para poder usarlo en nuestro archivo principal
 module.exports = router;
